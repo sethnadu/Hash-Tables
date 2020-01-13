@@ -59,8 +59,19 @@ class HashTable:
         # print("value to insert: ", value)
         position = self._hash_mod(key)
         # print("position", position)
-        if key not in self.storage:
+        if self.storage[position] is None:
             self.storage[position] = LinkedPair(key, value)
+        else:
+            current = self.storage[position]
+            while current is not None:
+                if current.key == key:
+                    current.value = value
+                    return self
+                elif current.next is None:
+                    current.next = LinkedPair(key, value)
+                    return current.next
+                else:
+                    current = current.next
 
     def remove(self, key):
         '''
@@ -71,12 +82,19 @@ class HashTable:
         Fill this in.
         '''
         position = self._hash_mod(key)
-        if self.storage[position].key:
-            # print("key to remove", key)
-            self.storage[position] = None
-            # print(self.storage[position])
+        current = self.storage[position]
+        while current is not None:
+            if current.key == key:
+                print("current", current.key)
+                current = None
+                # self.storage[position] = None
+                print("should be None", current)
+                return None
+            current = current.next
         else: 
             print("Key is not found")
+            
+        print("Current key still there?", self.storage[position])
 
 
     def retrieve(self, key):
@@ -89,8 +107,12 @@ class HashTable:
         '''
         position = self._hash_mod(key)
         if self.storage[position] is not None:
-            print(f"key: {key}, value: {self.storage[position].value} is found")
-            return self.storage[position].value
+            current = self.storage[position]
+            while current is not None:
+                if current.key == key:
+                    return current.value
+                current = current.next
+                
         else: 
             print("Key is not found")
             return None
