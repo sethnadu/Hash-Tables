@@ -23,6 +23,7 @@ class HashTable:
 
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
+
         return hash(key)
 
 
@@ -32,7 +33,10 @@ class HashTable:
 
         OPTIONAL STRETCH: Research and implement DJB2
         '''
-        pass
+        hash = 5381
+        for i in key:
+            hash = (hash * 33) + ord(i)
+        return hash
 
 
     def _hash_mod(self, key):
@@ -51,7 +55,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        print("key to insert: ", key)
+        print("value to insert: ", value)
+        position = self._hash_mod(key)
+        print("position", position)
+        if key not in self.storage:
+            self.storage.append(position)
+            self.storage[position] = value
 
 
 
@@ -63,7 +73,11 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        position = self._hash_mod(key)
+        if position in self.storage:
+            self.storage.remove(position)
+        else: 
+            print("Key is not found")
 
 
     def retrieve(self, key):
@@ -74,7 +88,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        position = self._hash_mod(key)
+        if position in self.storage:
+            print(f"key: {key}, value: {self.storage[position]} is found")
+            return self.storage[position]
+        else: 
+            print("Key is not found")
+            return None
 
 
     def resize(self):
@@ -84,8 +104,9 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
+        self.capacity *= 2
+        for key in self.storage:
+            self._hash(key)
 
 
 if __name__ == "__main__":
