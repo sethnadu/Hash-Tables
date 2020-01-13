@@ -55,15 +55,12 @@ class HashTable:
 
         Fill this in.
         '''
-        print("key to insert: ", key)
-        print("value to insert: ", value)
+        # print("key to insert: ", key)
+        # print("value to insert: ", value)
         position = self._hash_mod(key)
-        print("position", position)
+        # print("position", position)
         if key not in self.storage:
-            self.storage.append(position)
-            self.storage[position] = value
-
-
+            self.storage[position] = LinkedPair(key, value)
 
     def remove(self, key):
         '''
@@ -74,8 +71,10 @@ class HashTable:
         Fill this in.
         '''
         position = self._hash_mod(key)
-        if position in self.storage:
-            self.storage.remove(position)
+        if self.storage[position].key:
+            # print("key to remove", key)
+            self.storage[position] = None
+            # print(self.storage[position])
         else: 
             print("Key is not found")
 
@@ -89,9 +88,9 @@ class HashTable:
         Fill this in.
         '''
         position = self._hash_mod(key)
-        if position in self.storage:
-            print(f"key: {key}, value: {self.storage[position]} is found")
-            return self.storage[position]
+        if self.storage[position] is not None:
+            print(f"key: {key}, value: {self.storage[position].value} is found")
+            return self.storage[position].value
         else: 
             print("Key is not found")
             return None
@@ -105,8 +104,11 @@ class HashTable:
         Fill this in.
         '''
         self.capacity *= 2
-        for key in self.storage:
-            self._hash(key)
+        new_storage = [None] * self.capacity
+        for key in range(len(self.storage)):
+            if self.storage[key]:
+                new_storage[key] = self.storage[key]
+        self.storage = new_storage
 
 
 if __name__ == "__main__":
@@ -122,6 +124,8 @@ if __name__ == "__main__":
     print(ht.retrieve("line_1"))
     print(ht.retrieve("line_2"))
     print(ht.retrieve("line_3"))
+
+    # print(ht.remove("line_1"))
 
     # Test resizing
     old_capacity = len(ht.storage)
