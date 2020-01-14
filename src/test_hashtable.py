@@ -133,6 +133,7 @@ class TestHashTable(unittest.TestCase):
         ht.remove("key-0")
 
         return_value = ht.retrieve("key-0")
+        print(f"Should match: {return_value} and be None:", ht.retrieve("key-0"))
         self.assertTrue(return_value is None)
         return_value = ht.retrieve("key-1")
         self.assertTrue(return_value is None)
@@ -166,16 +167,19 @@ class TestHashTable(unittest.TestCase):
         ht.insert("key-7", "val-7")
         ht.insert("key-8", "val-8")
         ht.insert("key-9", "val-9")
-
+    
         ht.resize()
 
         self.assertTrue(len(ht.storage) == 16)
 
         return_value = ht.retrieve("key-0")
+        print("should be val-0", ht.retrieve("key-0"))
         self.assertTrue(return_value == "val-0")
         return_value = ht.retrieve("key-1")
+        print("should be val-1", ht.retrieve("key-1"))
         self.assertTrue(return_value == "val-1")
         return_value = ht.retrieve("key-2")
+        print("should be val-2", ht.retrieve("key-2"))
         self.assertTrue(return_value == "val-2")
         return_value = ht.retrieve("key-3")
         self.assertTrue(return_value == "val-3")
