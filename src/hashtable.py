@@ -83,16 +83,21 @@ class HashTable:
         '''
         position = self._hash_mod(key)
         current = self.storage[position]
+        prev = None
         while current is not None:
             if current.key == key:
-                print("current", current.key)
+                if prev is not None:
+                    prev.next = current.next
+                else:
+                    self.storage[position] = current.next
                 current = None
-                # self.storage[position] = None
-                print("should be None", current)
                 return None
-            current = current.next
-        else: 
-            print("Key is not found")
+            elif current.next is not None:
+                prev = current
+                current = current.next
+            else: 
+                print("Key is not found")
+        return None
             
         print("Current key still there?", self.storage[position])
 
@@ -112,7 +117,6 @@ class HashTable:
                 if current.key == key:
                     return current.value
                 current = current.next
-                
         else: 
             print("Key is not found")
             return None
@@ -126,11 +130,20 @@ class HashTable:
         Fill this in.
         '''
         self.capacity *= 2
+        print(self.storage)
+        count = 0
         new_storage = [None] * self.capacity
-        for key in range(len(self.storage)):
-            if self.storage[key]:
-                new_storage[key] = self.storage[key]
+        for key in self.storage:
+            if key is not None:
+                cur = key
+                while cur is not None:
+                    new_storage[count] = cur
+                    cur = cur.next
+                    count += 1
         self.storage = new_storage
+        for key in new_storage:
+            if key is not None:
+                self.insert(key.key, key.value)
 
 
 if __name__ == "__main__":
